@@ -11,4 +11,5 @@ module.exports = {
         new HtmlWebpackPlugin({template: __dirname + '/index.html'}),
         new CleanWebpackPlugin(['dist']),
     ],
+    devtool: 'inline-source-map',
 }
