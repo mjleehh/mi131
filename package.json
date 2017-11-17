@@ -1,0 +1,9 @@
+{
+  "name": "mi131",
+  "version": "1.0.0",
+  "description": "MI131 sample code",
+  "author": "Michael Jonathan Lee",
+  "scripts": {
+    "start": "simple-server"
+  }
+}
