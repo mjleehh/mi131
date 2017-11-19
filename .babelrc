@@ -1,0 +1,9 @@
+{
+  "presets": [
+    ["env",{"targets": {"chrome": "62"}}],
+    "react"
+  ],
+  "plugins": [
+    "transform-decorators-legacy"
+  ]
+}
