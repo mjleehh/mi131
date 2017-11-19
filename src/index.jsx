@@ -1,5 +1,12 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 
+class RootComponent extends React.Component {
+    render() {
+        console.log('render root component')
+        return <h1>Root Component Body</h1>
+    }
+}
 
-ReactDom.render(<h1>Hello React!</h1>, document.getElementById("main"))
+
+ReactDom.render(<RootComponent />, document.getElementById("main"))
