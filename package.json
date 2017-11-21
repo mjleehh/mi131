@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "radium": "^0.19.6",
-    "radium-grid": "^2.0.3"
+    "radium-grid": "^2.0.3",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1"
   }
 }
