@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import App from "./App"
 
 const names = [
     'phil',
@@ -9,4 +10,4 @@ const names = [
 
 const renderedNames = names.map(name => <li key={name}>{name}</li>)
 
-ReactDom.render(<ol>{renderedNames}</ol>, document.getElementById("main"))
+ReactDom.render(<App/>, document.getElementById("main"))
