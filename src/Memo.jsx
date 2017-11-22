@@ -1,14 +1,16 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {removeMemo} from "./actions"
 
+
+@connect()
 export default class Memo extends React.Component {
     constructor(props) {
         super(props)
 
         this.handleRemove = () => {
-            const {id, remove} = this.props
-            if (remove) {
-                remove(id)
-            }
+            const {dispatch, id} = this.props
+            dispatch(removeMemo(id))
         }
     }
 

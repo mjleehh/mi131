@@ -1,54 +1,36 @@
 import React from 'react'
 import Modal from 'react-modal'
-import uuidV4 from 'uuid/v4'
+import {connect} from 'react-redux'
 
 import MemoList from "./MemoList"
-import localStorageKey from "./localStorageKey"
-import store from 'store'
 import AddMemo from "./AddMemo"
+import {clearMemos, setMemoListFilter, showAddMemo} from "./actions"
 
 
+@connect(state => ({showAddMemo: state.showAddMemo, memoListFilter: state.memoListFilter}))
 export default class App extends React.Component {
     constructor(props) {
         super(props)
 
-        const memos = store.get(localStorageKey('memos')) || []
-        const showAddMemo = false
-
-        this.state = {memos, showAddMemo}
-
-        const addMemo = memo => prevState => {
-            const memoWithId = {id: uuidV4(), ...memo}
-            return {memos: [...prevState.memos, memoWithId]}
-        }
-
-        const removeMemo = memoId => prevState => {
-            const memos = prevState.memos.filter(memo => memo.id !== memoId)
-            return {memos}
-        }
-
-        this.handleShowAdd = () => this.setState({showAddMemo: true})
-        this.handleCancelAdd = () => this.setState({showAddMemo: false})
-
-
-        this.handelAddMemo = memo => {
-            this.setState({showAddMemo: false})
-            this.setState(addMemo(memo))
-        }
-        this.handleRemoveMemo = memoId => this.setState(removeMemo(memoId))
-        this.handleClearMemos = memoId => this.setState({memos: []})
+        this.handleShowAdd = () => this.props.dispatch(showAddMemo())
+        this.handleClearMemos = () => this.props.dispatch(clearMemos())
+        this.handleChangeFilter = event => this.props.dispatch(setMemoListFilter(event.target.value))
     }
 
     render() {
-        store.set(localStorageKey('memos'), this.state.memos)
-
+        const {showAddMemo, memoListFilter} = this.props
         return <div>
-            <Modal isOpen={this.state.showAddMemo} >
-                <AddMemo onAdd={this.handelAddMemo} onCancel={this.handleCancelAdd}/>
+            <Modal isOpen={showAddMemo} >
+                <AddMemo />
             </Modal>
-            <button onClick={this.handleShowAdd}>add memo</button>
-            <button onClick={this.handleClearMemos}>clear memos</button>
-            <MemoList memos={this.state.memos} remove={this.handleRemoveMemo}/>
+            <div>
+                <button onClick={this.handleShowAdd}>add memo</button>
+                <button onClick={this.handleClearMemos}>clear memos</button>
+            </div>
+            <div>
+                filter: <input type="text" value={memoListFilter} onChange={this.handleChangeFilter}/>
+            </div>
+            <MemoList />
         </div>
     }
 

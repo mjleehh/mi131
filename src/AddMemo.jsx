@@ -1,5 +1,8 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {addMemo, hideAddMemo} from "./actions"
 
+@connect()
 export default class AddMemo extends React.Component {
     constructor(props) {
         super(props)
@@ -10,18 +13,14 @@ export default class AddMemo extends React.Component {
         this.handleTextChange = event => this.setState({text: event.target.value})
 
         this.handleAdd = event => {
-            const {onAdd} = this.props
-            if (onAdd) {
-                onAdd(this.state)
-            }
+            const {title, text} = this.state
+            this.props.dispatch(addMemo({title, text}))
+            this.props.dispatch(hideAddMemo())
             event.preventDefault()
         }
 
         this.handleCancel = () => {
-            const {onCancel} = this.props
-            if (onCancel) {
-                onCancel()
-            }
+            this.props.dispatch(hideAddMemo())
         }
     }
 

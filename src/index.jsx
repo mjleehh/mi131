@@ -1,13 +1,15 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
+
+import appReducer from './reducer'
 import App from "./App"
 
-const names = [
-    'phil',
-    'pete',
-    'bob'
-]
+const appStore = createStore(appReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
-const renderedNames = names.map(name => <li key={name}>{name}</li>)
-
-ReactDom.render(<App/>, document.getElementById("main"))
+ReactDom.render(
+    <Provider store={appStore}>
+        <App/>
+    </Provider>,
+    document.getElementById("main"))
