@@ -16,6 +16,9 @@ module.exports = {
             },
         ],
     },
+    resolve: {
+        extensions: ['.js', '.jsx']
+    },
     plugins: [
         new HtmlWebpackPlugin({template: __dirname + '/index.html'}),
         new CleanWebpackPlugin(['dist']),
