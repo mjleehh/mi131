@@ -4,8 +4,8 @@
   "description": "MI131 sample code",
   "author": "Michael Jonathan Lee",
   "scripts": {
-    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
-    "build": "./node_modules/webpack/bin/webpack.js"
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
+    "build": "node ./node_modules/webpack/bin/webpack.js"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
