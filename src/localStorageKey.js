@@ -1,1 +1,0 @@
-export default (key) => 'mi131/examples/memolist/no_redux/' + key
