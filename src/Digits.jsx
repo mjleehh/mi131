@@ -1,14 +1,13 @@
 import React from 'react'
-import Radium from 'radium'
+import styleDefaults from './style'
 
-const digitStyle = {
-    padding: '5px',
-    width: '25px',
-    height: '25px',
-    background: 'grey',
+const digitContainterStyle = {
+    width: styleDefaults.blockSize,
+    height: styleDefaults.blockSize,
+    margin: styleDefaults.margin,
+    background: styleDefaults.digitButton,
 }
 
-@Radium
 export default class Digits extends React.Component {
     constructor(props) {
         super(props)
@@ -23,9 +22,17 @@ export default class Digits extends React.Component {
     }
 
     createLabelRow(...args) {
-        const labelRow = [...args].map(num =>
-            <label style={digitStyle} key={num} onClick={this.handleDigitClicked(num)}>{num}</label>)
-        return <div>
+        const labelRow = [...args].map((num, index) => {
+            if (num !== null) {
+                return <div className="vert-center" style={digitContainterStyle} key={index} onClick={this.handleDigitClicked(num)}>
+                    <div className="horiz-center">{num}</div>
+                </div>
+            } else {
+                return <div className="vert-center" style={digitContainterStyle} key={index} />
+            }
+        })
+
+        return <div className="row">
             {labelRow}
         </div>
     }
@@ -35,7 +42,7 @@ export default class Digits extends React.Component {
             {this.createLabelRow(1,2,3)}
             {this.createLabelRow(4,5,6)}
             {this.createLabelRow(7,8,9)}
-            {this.createLabelRow(0)}
+            {this.createLabelRow('c', 0, '.')}
         </div>
     }
 }

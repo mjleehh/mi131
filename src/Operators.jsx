@@ -1,4 +1,17 @@
 import React from 'react'
+import styleDefaults from "./style"
+
+const operatorContainerStyle = {
+    width: styleDefaults.blockSize,
+    height: styleDefaults.blockSize,
+    margin: styleDefaults.margin,
+    background: styleDefaults.operatorButton,
+}
+
+const operatorStyle = {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+}
 
 export default class Operators extends React.Component {
     constructor(props) {
@@ -10,22 +23,20 @@ export default class Operators extends React.Component {
                 onOperator(operator)
             }
         }
+    }
 
-        this.handleEqual = event => {
-            const {onEqual} = this.props
-            if (onEqual) {
-                onEqual()
-            }
-        }
+    createOperatorButton(text) {
+        return <div><div className="vert-center" style={operatorContainerStyle} onClick={this.handleOperator(text)}>
+            <div style={operatorStyle}>{text}</div>
+        </div></div>
     }
 
     render() {
-        return <div>
-            <div onClick={this.handleOperator('+')}>+</div>
-            <div onClick={this.handleOperator('-')}>-</div>
-            <div onClick={this.handleOperator('*')}>*</div>
-            <div onClick={this.handleOperator('/')}>/</div>
-            <div onClick={this.handleEqual}>=</div>
+        return <div className="colum">
+            {this.createOperatorButton('+')}
+            {this.createOperatorButton('-')}
+            {this.createOperatorButton('*')}
+            {this.createOperatorButton('/')}
         </div>
     }
 }

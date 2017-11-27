@@ -1,0 +1,25 @@
+body {
+    font-family: sans-serif;
+    background: black;
+}
+
+.vert-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.horiz-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.colum {
+    display: flex;
+    flex-direction: column;
+}

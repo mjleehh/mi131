@@ -1,0 +1,18 @@
+{
+    "margin": "3px",
+    "blockSize": "25px",
+    "backgroundSecondary": "#fbfbfb",
+    "backgroundPrimary": "#ffffff",
+    "headerPrimary": "#05305d",
+    "headerSecondary": "#506f8e",
+    "footer": "#e10020",
+
+    "lcd": "#e7f2fd",
+    "digitButton": "#cfe5fc",
+    "operatorButton": "#0d59a5",
+    "equalButton": "#0d7cf2",
+
+    "lightFontColor": "white",
+    "darkFontColor": "black",
+    "fontFamily": "Sans-serif"
+}

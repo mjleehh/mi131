@@ -14,10 +14,19 @@ module.exports = {
                 use: 'babel-loader',
                 exclude: /node_modules/
             },
+            {
+                test: /\.json$/,
+                use: 'json-loader',
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ]
+            }
         ],
     },
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.json']
     },
     plugins: [
         new HtmlWebpackPlugin({template: __dirname + '/index.html'}),
