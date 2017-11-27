@@ -1,5 +1,7 @@
 import React from 'react'
-import styleDefaults from "./style"
+import {connect} from 'react-redux'
+import styleDefaults from './style'
+import {setOperator} from "./actions"
 
 const operatorContainerStyle = {
     width: styleDefaults.blockSize,
@@ -13,15 +15,14 @@ const operatorStyle = {
     marginRight: 'auto',
 }
 
+@connect()
 export default class Operators extends React.Component {
     constructor(props) {
         super(props)
 
         this.handleOperator = operator => event => {
-            const {onOperator} = this.props
-            if (onOperator) {
-                onOperator(operator)
-            }
+            this.props.dispatch(setOperator(operator))
+            event.preventDefault()
         }
     }
 

@@ -1,31 +1,14 @@
 import React from 'react'
 import keydown, {Keys} from 'react-keydown'
+import {connect} from 'react-redux'
 
 import Digits from './Digits'
 import Display from './Display'
 import Operators from './Operators'
 import Equal from "./Equal"
 import styleDefaults from "./style"
+import {addDigit, calculate, removeDigit, setDot, setOperator} from "./actions"
 
-const initialValue = '0'
-
-function performOperation(acc, b) {
-    const {number} = acc
-    const lhs = parseFloat(number)
-    const rhs = parseFloat(b)
-
-    switch (acc.operator) {
-        case '+':
-            return `${lhs + rhs}`
-        case '-':
-            return `${lhs - rhs}`
-        case '*':
-            return `${lhs * rhs}`
-        case '/':
-            return `${lhs / rhs}`
-    }
-    throw `invalid operator ${acc.operator}`
-}
 
 const appStyle = {
     display: 'inline-block',
@@ -43,118 +26,52 @@ const contentStyle = {
     padding: styleDefaults.margin,
 }
 
-
+@connect()
 export default class App extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {number: initialValue, acc: null}
-
-        this.handleDigitButton = digit => {
-            if (digit === '.') {
-                this.handleDot()
-            } else if (digit === 'c') {
-                this.handleC()
-            } else {
-                this.handleDigit(digit)
-            }
-        }
-
-        this.handleDigit = digit => this.setState(prevState => {
-            let number = prevState.number === initialValue
-                ? digit.toString()
-                : prevState.number + digit
-            return {number}
-        })
-
-        this.handleDot = digit => this.setState(prevState => {
-            let number = prevState.number.indexOf('.') !== -1
-                ? prevState.number
-                :  prevState.number + '.'
-            return {number}
-        })
-
-        this.handleC = digit => this.setState(prevState => {
-            let number = prevState.number.length < 2
-                ? initialValue
-                : prevState.number.slice(0, -1)
-            return {number}
-        })
-
-        this.handleEqual = () => this.setState(prevState => {
-            const {acc, number} = prevState
-            if (acc) {
-
-                const res = performOperation(acc, number)
-                return {
-                    acc: null,
-                    number: res,
-                }
-            }
-            return prevState
-        })
-
-        this.handleOperator = operator => this.setState(prevState => {
-            const {acc, number} = prevState
-            const res = acc
-                ? performOperation(acc, number)
-                : number
-            return {
-                acc: {
-                    number: res,
-                    operator: operator,
-                },
-                number: initialValue,
-            }
-        })
-
-    }
-
     @keydown('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
     handleNumberKey(event) {
-        this.handleDigit(event.key)
+        this.props.dispatch(addDigit(event.key))
         event.preventDefault()
     }
 
     @keydown('=', 'enter')
     handleEqualKey(event) {
-        this.handleEqual()
+        this.props.dispatch(calculate())
         event.preventDefault()
     }
 
     @keydown('.')
     handleDotKey(event) {
-        this.handleDot()
+        this.props.dispatch(setDot())
         event.preventDefault()
     }
 
-    @keydown('c')
+    @keydown('c', 'backspace')
     handleCKey(event) {
-        this.handleC()
+        this.props.dispatch(removeDigit())
         event.preventDefault()
     }
 
     @keydown('+', '-', '*', '/', 'shift+=', 'shift+8')
     handleOperatorKey(event) {
-        this.handleOperator(event.key)
+        this.props.dispatch(setOperator(event.key))
         event.preventDefault()
     }
 
     render() {
-        const {number, acc} = this.state
         return <div className="column" style={appStyle}>
             <div style={headerStyle}>
                 Calc
             </div>
             <div className="colum" style={contentStyle}>
                 <div>
-                    <Display number={number} acc={acc}/>
+                    <Display/>
                 </div>
                 <div className="row">
-                    <Digits onDigit={this.handleDigitButton} />
-                    <Operators onOperator={this.handleOperator} onEqual={this.handleEqual} />
+                    <Digits />
+                    <Operators />
                 </div>
-                <Equal onClick={this.handleEqual} />
+                <Equal />
             </div>
         </div>
     }

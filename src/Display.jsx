@@ -1,5 +1,6 @@
 import React from 'react'
 import styleDefaults from "./style"
+import {connect} from 'react-redux'
 
 const lcdStyle = {
     borderColor: styleDefaults.darkFontColor,
@@ -24,6 +25,7 @@ const textBoxStyle = {
     marginLeft: styleDefaults.margin,
 }
 
+@connect(state => state)
 export default class Display extends React.Component {
     render() {
         const {acc, number} = this.props
