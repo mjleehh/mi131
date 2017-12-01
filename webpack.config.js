@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
-    entry: './src/index.jsx',
+    entry: './app/index.jsx',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js',
