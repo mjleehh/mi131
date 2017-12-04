@@ -8,6 +8,7 @@ import {
     showEditNote,
     closeModal,
 } from 'src/common/actions'
+import {fetchedNotes} from "./actions"
 
 function initialState() {
     return {
@@ -20,13 +21,13 @@ function addNoteReducer(state, {payload}) {
     return {...state, notes: [...state.notes, payload]}
 }
 
-function changeNoteReducer(state, {payload: {id, patch}}) {
-    const notes = state.notes.map(note => note.id !== id ? note : {...note, ...patch})
+function changeNoteReducer(state, {payload}) {
+    const notes = state.notes.map(note => note._id !== payload._id ? note : payload)
     return {...state, notes}
 }
 
 function removeNoteReducer(state, {payload}) {
-    const notes = state.notes.filter(note => note.id !== payload)
+    const notes = state.notes.filter(note => note._id !== payload)
     return {...state, notes}
 }
 
@@ -44,13 +45,13 @@ function closeModalReducer(state) {
     return {...state, modal: null}
 }
 
-function initialServerState(state, {payload}) {
-    return payload
+function fetchedNotesReducer(state, {payload}) {
+    return {...state, notes: payload}
 }
 
 export default handleActions(
     {
-        'INITIAL_SERVER_STATE': initialServerState,
+        [fetchedNotes]: fetchedNotesReducer,
         [addedNote]: addNoteReducer,
         [changedNote]: changeNoteReducer,
         [removedNote]: removeNoteReducer,

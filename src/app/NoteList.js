@@ -17,12 +17,12 @@ export default class NoteList extends React.Component {
     }
 
     render() {
-        const renderedNotes = this.props.notes.map(note => <div className="row" key={note.id}>
+        const renderedNotes = this.props.notes.map(note => <div className="row" key={note._id}>
             {note.title}
-            <div className="icon" onClick={this.handleEdit(note.id)}>
+            <div className="icon" onClick={this.handleEdit(note._id)}>
                     &#9998;
             </div>
-            <div className="icon" onClick={this.handleDelete(note.id)}>
+            <div className="icon" onClick={this.handleDelete(note._id)}>
                 &#x274c;
             </div>
         </div>)
