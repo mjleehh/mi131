@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
-    entry: './app/index.jsx',
+    entry: './src/app/index.jsx',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js',
@@ -33,4 +33,11 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
     ],
     devtool: 'inline-source-map',
+    devServer: {
+        proxy: {
+            '/api': {
+                'target': 'http://localhost:3000'
+            }
+        }
+    },
 }

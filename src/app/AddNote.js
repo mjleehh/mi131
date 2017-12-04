@@ -1,8 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import uuidV4 from 'uuid/v4'
 
-import {addNote, closeModal} from "./action"
+import {addNote, closeModal} from "../common/actions"
 
 @connect()
 export default class AddNote extends React.Component {
@@ -15,7 +14,7 @@ export default class AddNote extends React.Component {
         this.handleBodyChange = event => this.setState({body: event.target.value})
 
         this.handleSubmit = event => {
-            this.props.dispatch(addNote({...this.state, id: uuidV4()}))
+            this.props.dispatch(addNote(this.state))
             this.props.dispatch(closeModal())
             event.preventDefault()
         }
