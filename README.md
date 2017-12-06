@@ -45,11 +45,23 @@ $ git checkout example-name
 
 To make sure you have all dependencies installed, clear the `node_modules` directory:
 ```bash
-$ rm -r node_modules
 $ npm i
 ```
 
 To run the example in your browser:
 ```bash
 $ npm start
+```
+This will start a backend on `localhost:3000` and a serve the frontend at `localhost:8080`
+Both the backend and frontend code is watched, so if you change something it will instantly update.
+
+NOTE: This will not work on Windows systems. To run the example on Windows:
+
+Go to the project root directory and first start the backend:
+```
+node ./node_modules/babel-watch/babel-watch.js src/server/index.js
+```
+Then start the webpack server, to server the frontend:
+```
+node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open
 ```

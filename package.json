@@ -4,7 +4,7 @@
   "description": "MI131 sample code",
   "author": "Michael Jonathan Lee",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
+    "start": "./scripts/start.sh",
     "build": "node ./node_modules/webpack/bin/webpack.js",
     "test": "BABE_ENV=test node ./node_modules/mocha/bin/mocha --require babel-register"
   },
@@ -16,6 +16,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "babel-watch": "^2.0.7",
     "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.17",
     "css-loader": "^0.28.7",
