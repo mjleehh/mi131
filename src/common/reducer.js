@@ -7,7 +7,7 @@ import {
     showAddNote,
     showEditNote,
     closeModal,
-} from 'src/common/actions'
+} from '../common/actions'
 import {fetchedNotes} from "./actions"
 
 function initialState() {

@@ -8,8 +8,8 @@ import {Provider} from 'react-redux'
 import axios from 'axios'
 
 import './style.css'
-import reducer from 'src/common/reducer'
-import {fetchedNotes} from 'src/common/actions'
+import reducer from '../common/reducer'
+import {fetchedNotes} from '../common/actions'
 import notesListener from './notesListener'
 
 import App from './App'

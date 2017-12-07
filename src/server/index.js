@@ -11,7 +11,7 @@ import {
     removedNote,
     changedNote,
 
-} from 'src/common/actions'
+} from '../common/actions'
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/notes', {useMongoClient: true})
