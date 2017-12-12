@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {removeNote, showEditNote} from "../common/actions"
+import {removeNote, showEditNote} from "../state/actions"
 
 @connect(state => ({notes: state.notes}))
 export default class NoteList extends React.Component {

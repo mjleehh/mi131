@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {changeTitle, changeBody} from "../common/actions"
+import {changeTitle, changeBody} from "../state/actions"
 
 @connect(state => ({notes: state.notes}))
 export default class EditNote extends React.Component {

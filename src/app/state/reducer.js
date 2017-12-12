@@ -4,17 +4,31 @@ import {
     addedNote,
     changedNote,
     removedNote,
+} from '../../common/server-actions'
+
+import {
+    loggedIn,
+    loggedOut,
+    fetchedNotes,
     showAddNote,
     showEditNote,
     closeModal,
-} from '../common/actions'
-import {fetchedNotes} from "./actions"
+} from "./actions"
 
 function initialState() {
     return {
         notes: [],
         modal: null,
+        user: null,
     }
+}
+
+function loggedInReducer(state, {payload}) {
+    return {...state, user: payload}
+}
+
+function loggedOutReducer(state) {
+    return {...state, user: null}
 }
 
 function addNoteReducer(state, {payload}) {
@@ -51,6 +65,8 @@ function fetchedNotesReducer(state, {payload}) {
 
 export default handleActions(
     {
+        [loggedIn]: loggedInReducer,
+        [loggedOut]: loggedOutReducer,
         [fetchedNotes]: fetchedNotesReducer,
         [addedNote]: addNoteReducer,
         [changedNote]: changeNoteReducer,

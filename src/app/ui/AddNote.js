@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {addNote, closeModal} from "../common/actions"
+import {addNote, closeModal} from '../state/actions'
 
 @connect()
 export default class AddNote extends React.Component {

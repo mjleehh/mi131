@@ -5,7 +5,7 @@ import Modal from 'react-modal'
 import AddNote from './AddNote'
 import EditNote from './EditNote'
 import NoteList from './NoteList'
-import {closeModal, showAddNote} from "../common/actions"
+import {closeModal, showAddNote} from "../state/actions"
 
 const modalStyle = {
     content: {

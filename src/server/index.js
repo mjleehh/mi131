@@ -1,121 +1,61 @@
-
 import express from 'express'
 import http from 'http'
 import io from 'socket.io'
-import uuidV4 from 'uuid/v4'
 import mongoose from 'mongoose'
+import logger from 'morgan'
 import bodyParser from 'body-parser'
+import session, {MemoryStore} from 'express-session'
+import passport from 'passport'
+import passportSocketIo from 'passport.socketio'
 
-import {
-    addedNote,
-    removedNote,
-    changedNote,
-
-} from '../common/actions'
+import initUsers from './user'
+import initNotes from './notes'
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/notes', {useMongoClient: true})
 
+const sessionSecret = 'very secret'
+const sessionId = 'notes.sid'
+const sessionStore = new MemoryStore()
+const sessionSetup = {
+    key: sessionId,
+    secret: sessionSecret,
+    resave: false,
+    store: sessionStore,
+    saveUninitialized: false,
+    cookie: {}
+}
+
 const app = express()
+app.use(logger('dev'))
 app.use(bodyParser.json())
+app.use(session(sessionSetup))
+app.use(passport.initialize())
+app.use(passport.session())
+
 const server = http.Server(app)
 const socketServer = io(server)
 
-
-const Note = mongoose.model('note', new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    body: String,
+socketServer.use(passportSocketIo.authorize({
+    key: sessionId,
+    secret: sessionSecret,
+    store: sessionStore,
 }))
 
-app.get('/notes', (req, res) => {
-    Note.find({})
-        .then(val => {
-            res.send(val)
-        })
-        .catch(err => {
-            res.status(500)
-            res.send(err)
-        })
-})
-
-app.post('/note', (req, res) => {
-    const body = {...req.body, id: uuidV4()}
-    const note = new Note(body)
-    note.save()
-        .then(val => {
-            res.send(val)
-            socketServer.in('notes').emit('notes_action', addedNote(val))
-        })
-        .catch(err => {
-            res.status(500)
-            res.send(err)
-        })
-})
-
-app.post('/note', (req, res) => {
-    const body = {...req.body, id: uuidV4()}
-    const note = new Note(body)
-    note.save()
-        .then(val => {
-            res.send(val)
-            socketServer.in('notes').emit('notes_action', addedNote(val))
-        })
-        .catch(err => {
-            res.status(500)
-            res.send(err)
-        })
-})
-
-app.put('/note/:noteId/title', (req, res) => {
-    const {noteId} = req.params
-    const {title} = req.body
-    Note.findOneAndUpdate({_id: noteId}, {$set: {title}}, {new: true})
-        .then(val => {
-            res.send(val)
-            console.log(val)
-            socketServer.in('notes').emit('notes_action', changedNote(val))
-        })
-        .catch(err => {
-            res.status(500)
-            res.send({error: err.message})
-        })
-})
-
-app.put('/note/:noteId/body', (req, res) => {
-    const {noteId} = req.params
-    const {body} = req.body
-    Note.findOneAndUpdate({_id: noteId}, {$set: {body}}, {new: true})
-        .then(val => {
-            res.send(val)
-            socketServer.in('notes').emit('notes_action', changedNote(val))
-        })
-        .catch(err => {
-            res.status(500)
-            res.send({error: err.message})
-        })
-})
-
-app.delete('/note/:noteId', (req, res) => {
-    const {noteId} = req.params
-    Note.remove({_id: noteId})
-        .then(() => {
-            res.send({id: noteId})
-            socketServer.in('notes').emit('notes_action', removedNote(noteId))
-        })
-        .catch(err => {
-            res.status(500)
-            res.send({error: err.message})
-        })
-})
-
 socketServer.on('connection', (socket) => {
-    socket.on('notes', () => {
-        socket.join('notes')
+    socket.on('listen', () => {
+        const user = socket.request.user
+        for (let foo in socket.rooms) {
+            socket.leave(foo)
+        }
+        socket.join(`${user}-events`)
     })
 })
+
+const emitAction = (user, action) => socketServer.in(`${user}-events`).emit('action', action)
+
+const ensureAuthenticated = initUsers(app)
+initNotes(app, ensureAuthenticated, emitAction)
 
 server.listen(3000)
 console.log('listening on :3000')
